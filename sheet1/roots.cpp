@@ -84,15 +84,16 @@ main(){
 // functions
 
 double equiltemp(vector<double> *consts, double T){
-//  return (*consts)[0] * (*consts)[1] * pow(T, 3./2.) *
-//         (T - (*consts)[3]) / ( (*consts)[2] - T) - 1;
-  return (*consts)[0] * (*consts)[2] * sqrt(T) * (T - (*consts)[4]) - 
-         (*consts)[1] * (((*consts)[3]/T) - 1);
+  return (*consts)[0] * (*consts)[2] * (T - (*consts)[4]) - 
+         (*consts)[1] * (((*consts)[3]/T) - 1) / sqrt(T);
 }
 
 double derivative(vector<double> *consts, double T){
-  return (*consts)[0] * (*consts)[2] * (1/(2*sqrt(T)) * (T - (*consts)[4]) 
-         + sqrt(T)) + (*consts)[1] * (*consts)[3] / pow(T, 2.);
+//  return (*consts)[0] * (*consts)[2] * (1/(2*sqrt(T)) * (T - (*consts)[4]) 
+//         + sqrt(T)) + (*consts)[1] * (*consts)[3] / pow(T, 2.);
+  return (*consts)[0] * (*consts)[2] + (*consts)[1] * 
+         ((*consts)[3]/pow(T, 5./2.) + 1/(2*pow(T, 3./2.)) *
+         (((*consts)[3]/T) - 1));
 }
 
 double bisection(double (*f)(vector<double> *, double), vector<double> *consts,
