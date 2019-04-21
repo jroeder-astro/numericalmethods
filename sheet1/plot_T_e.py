@@ -12,9 +12,13 @@ def e_temp(T):
     # return qlc*urc*np.power(T, 3./2.) * (T-T_g) / (T_p-T) - 1
     return q*urc*np.sqrt(T)*(T-T_g) - lc*(T_p/T - 1)
 
+def zero(T):
+    return 0*T
+
 T_test = np.arange(10000000, 0.2*100000000, 1)
 
 plt.plot(T_test, e_temp(T_test), label = 'electron temperature')
+plt.plot(T_test, zero(T_test))
 plt.xlabel('$T_e$')
 plt.ylabel('$f(T_e)$')
 plt.show()
