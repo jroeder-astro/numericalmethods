@@ -129,6 +129,7 @@ double bisection(double (*f)(vector<double> *, double), vector<double> *consts,
 
     root = (lower + upper) / 2.;
     error = fabs((root/root_prev)-1);
+    
     count += 1;
   } 
 
