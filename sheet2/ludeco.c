@@ -40,18 +40,22 @@ void lu_decomposition(double **A, double **U, double **L, int n){
   double sum = 0.0;
 
   L[0][0] = 1;
+
+  for (i1 = 0; i1 < n; i1++) {
+    L[i1][i1] = 1;
+  }
+
+
   U[0][0] = A[1][1];
 
-  for (i2 = 1; i2 < n; i2++) {
+  for (i2 = 0; i2 < n; i2++) {
 
     for (i1 = 0; i1 <= i2; i1++) {
       // loop for beta_ij
-
       sum = 0.0;
 
       for (i3 = 0; i3 < i1; i3++) {
-        if (i3 == i1) sum += U[i3][i2];
-        else sum += L[i1][i3]*U[i3][i2];
+        sum += L[i1][i3]*U[i3][i2];
       }
 
       U[i1][i2] = A[i1][i2] - sum;
@@ -59,12 +63,10 @@ void lu_decomposition(double **A, double **U, double **L, int n){
   
     for (i1 = i2+1; i1 < n; i1++) {
       // loop for alpha_ij
-
       sum = 0.0;
 
       for (i3 = 0; i3 < i2; i3++) {
-        if (i3 == i1) sum += U[i3][i2];
-        else sum += L[i1][i3]*U[i3][i2];
+        sum += L[i1][i3]*U[i3][i2];
       }
 
       L[i1][i2] = (A[i1][i2] - sum)/U[i2][i2];
@@ -105,9 +107,8 @@ void uxy(double **U, double *x, double *y, int n){
 }
 
 void print_matrix(double **A, int n){
-
   for (int i1 = 0; i1 < n; i1++) {
-    printf("| %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f |\n", 
+    printf("| %+3.3f   %+3.3f   %+3.3f   %+3.3f   %+3.3f   %+3.3f   %+3.3f   %+3.3f   %+3.3f   %+3.3f |\n", 
       A[i1][0], A[i1][1], A[i1][2], A[i1][3], A[i1][4], A[i1][5], A[i1][6], 
       A[i1][7], A[i1][8], A[i1][9]);
   }
@@ -170,31 +171,3 @@ int main() {
   return 0;
 }
 
-
-
-// ONLY BACKUP CODE BEYOND THIS POINT, PLEASE IGNORE
-
-
-
-/*
-  // test print matrix A
-  for (i1 = 0; i1 < n; i1++) {
-    printf("| %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f  %+3.3f |\n", 
-      A[i1][0], A[i1][1], A[i1][2], A[i1][3], A[i1][4], A[i1][5], A[i1][6], 
-      A[i1][7], A[i1][8], A[i1][9]);
-  }
-*/
-
-/*
-  if ((A = (double **)malloc(n*sizeof(double))) == NULL) {
-    printf("malloc not successful");
-    exit(0);
-  }
-
-  for (i1 = 0; i1 < n; i1++) {
-    if ((A[i1] = (double *)malloc(n*sizeof(double))) == NULL) {
-      printf("malloc not successful");
-      exit(0);
-    }
-  }
-*/
