@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include <math.h>
 
+/*
+
+I could not get my head around how to properly loop over
+Cramer's rule to keep track of operations.
+
+*/
+
 // Functions
 
 void arr_alloc(double **arr, int n) {
@@ -68,20 +75,8 @@ int main() {
 
   const int n = 3;
   double  **A = NULL;
-  mat_alloc(&A, n);
-/*
-  if ((A = (double **)malloc(n*sizeof(double *))) == NULL) {
-    printf("malloc not successful");
-    exit(0);
-  }
+  mat_alloc(&A, n)
 
-  for (i1 = 0; i1 < n; i1++) {
-    if ((A[i1] = (double *)malloc(n*sizeof(double))) == NULL) {
-      printf("malloc not successful");
-      exit(0);
-    }
-  }
-*/
   double *b = NULL;
   arr_alloc(&b, n);
 
