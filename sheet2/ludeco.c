@@ -49,7 +49,7 @@ void lu_decomposition(double **A, double **U, double **L, int n){
     L[i1][i1] = 1;
   }
 
-  U[0][0] = A[0][0];
+  U[0][0] = A[0][0]; // hopefully correct starting point
 
   for (i2 = 0; i2 < n; i2++) {
 
@@ -88,6 +88,11 @@ void lyb(double **L, double *y, double *b, int n){
     }
     y[i1] = (b[i1]-sum)/L[i1][i1];
   }
+
+  printf("\n\n Intermediate result: y = \n");
+  for (i1 = 0; i1 < n; i1++) {
+    printf("|  %+.10f  |\n", y[i1]);
+  }
 }
 
 void uxy(double **U, double *x, double *y, int n){
@@ -96,13 +101,23 @@ void uxy(double **U, double *x, double *y, int n){
   double sum = 0;
   x[n-1] = y[n-1]/U[n-1][n-1];
 // ^^^^^   vvvv   vvvvv  pot. prob.
-  for (i1 = n-2; i1 = 0; i1--) {
+  i1 = n-2;
+  printf("i1 = %d\n", i1);
+     //         vvvvvvvvvv !!!!!!!!!!!!!!!!!!!!
+  for (i1 = n-2; i1 >= 0; i1--) {
     sum = 0;    // vvvvvvvv pot. prob.
     for (i2 = i1+1; i2 < n; i2++) {
       sum += U[i1][i2]*x[i2];
     }
+    printf("do smth");
     x[i1] = (y[i1]-sum)/U[i1][i1];
   }
+
+  printf("\n\n Final result: x = \n");
+  for (i1 = 0; i1 < n; i1++) {
+    printf("|  %+.10f  |\n", x[i1]);
+  }
+
 }
 
 void print_matrix(double **A, int n){
@@ -148,7 +163,7 @@ int main() {
   // fill up matrix A
   for (i1 = 0; i1 < n; i1++) {
     for (i2 = 0; i2 < n; i2++) {
-      A[i1][i2] = 1/(cos((double)i1+eps)+sin((double)i2+eps));
+      A[i1][i2] = 1/(cos((double)(i1+1)+eps)+sin((double)(i2+1)+eps));
     }
   }
 
@@ -156,7 +171,7 @@ int main() {
 
   // fill up vector b
   for (i1 = 0; i1 < n; i1++) {
-    b[i1] = 1/((double)i1+1) - eps;
+    b[i1] = 1/((double)(i1+1)) - eps;
   }
   printf("\n\nb vector: b = \n");
   for (i1 = 0; i1 < n; i1++) {
@@ -173,14 +188,14 @@ int main() {
 
   printf("\n\nResult vector: x = \n");
   for (i1 = 0; i1 < n; i1++) {
-    printf("|  %+.3f  |\n", x[i1]);
+    printf("|  %+.10f  |\n", x[i1]);
   }
 
   // calculate residual vector
   double res = residual(A, x, b, R, n);
   printf("\n\nResidual vector: R = \n");
   for (i1 = 0; i1 < n; i1++) {
-    printf("|  %+.3f  |\n", R[i1]);
+    printf("|  %+.10f  |\n", R[i1]);
   }
 
   // free allocated memory
