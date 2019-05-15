@@ -18,7 +18,7 @@ double linear(vector<double> *xvals, vector<double> *yvals,
               int n, double xbar);
  
 int main(){
-  int N = 99; 
+  int N = 999; 
   vector<double> xi(N+1); vector<double> yi(N+1);
   double upper =  10; double lower = -10;
   double root1 = 0.0; double root2 = 0.0;
@@ -35,19 +35,42 @@ int main(){
   for (i1 = 0; i1 < N+1; i1++) xi[i1] = lower + (double)i1 * step;   
   for (i1 = 0; i1 < N+1; i1++) yi[i1] = function1(xi[i1]);   
 
-  // linear interpolation
-  // find the points xbar lies between
-/*
-  printf("f(-5)[intp] = %3.6f\n", linear(&xi,&yi,N+1,-5.));
-  printf("f(-5)[true] = %3.6f\n", function1(-5.));
-  printf("f(+5)[intp] = %3.6f\n", linear(&xi,&yi,N+1,+5.));
-  printf("f(+5)[true] = %3.6f\n", function1(+5.));
-*/
-
+  vector<double> xvals(4); vector<double> yvals(4);
+ 
   // Neville's algorithm for first function
-  upper = 10; lower = -10; double xbar = 5.;
- // printf("f1(+5)[intp] = %3.8f\n", neville(xbar, &xvals, &yvals, 3, 0));
- // printf("f1(+5)[true] = %3.8f\n", function2(xbar));
+  upper = 10; lower = 0; double xbar = 5.;
+ 
+  for (i1 = 0; i1 < N+1; i1++) {
+    if (xi[i1] > xbar) {
+      for (i2 = 0; i2 < 4; i2++) {
+        xvals[i2] = xi[i1-2+i2];            
+        // printf("xval: %3.4f\n", xvals[i2]);
+        yvals[i2] = function1(xi[i1-1+i2]); 
+        // printf("yval: %3.4f\n", yvals[i2]);
+      }
+      break;
+    }
+  }
+
+  printf("f1(+5)[intp] = %3.8f\n", neville(xbar, &xvals, &yvals, 3, 0));
+  printf("f1(+5)[true] = %3.8f\n", function1(xbar));
+
+  upper = 0; lower = -10;xbar = -5.;
+ 
+  for (i1 = 0; i1 < N+1; i1++) {
+    if (xi[i1] > xbar) {
+      for (i2 = 0; i2 < 4; i2++) {
+        xvals[i2] = xi[i1-2+i2];            
+        // printf("xval: %3.4f\n", xvals[i2]);
+        yvals[i2] = function1(xi[i1-1+i2]); 
+        // printf("yval: %3.4f\n", yvals[i2]);
+      }
+      break;
+    }
+  }
+
+  printf("f1(-5)[intp] = %3.8f\n", neville(xbar, &xvals, &yvals, 3, 0));
+  printf("f1(-5)[true] = %3.8f\n", function1(xbar));
 
 
   /*......................*/
@@ -59,7 +82,7 @@ int main(){
   N = 999; upper = 20; lower = 0;
   step = (upper-lower)/N;
   vector<double> xj(N+1);  vector<double> yj(N+1);
-  vector<double> xvals(4); vector<double> yvals(4);
+  //vector<double> xvals(4); vector<double> yvals(4);
 
   for (i1 = 0; i1 < N+1; i1++) xj[i1] = lower + (double)i1*step;   
   for (i1 = 0; i1 < N+1; i1++) yj[i1] = function2(xj[i1]); 
