@@ -134,7 +134,6 @@ double neville(double xbar, vector<double> *xvals, vector<double> *yvals,
          ((*xvals)[indx] - (*xvals)[ordr]);
 }
 
-
 double linear(vector<double> *xvals, vector<double> *yvals, 
               int n, double xbar){
   int i1 = 0; int i2 = 0;
