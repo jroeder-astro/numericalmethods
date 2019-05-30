@@ -66,6 +66,6 @@ void montecarlo(int N, double(*f)(double), double min, double max){
 
   // printf("Number: %d\nResult: %3.5f\nVariance: %3.5f\n", 
   //        N, result, variance);
-  printf("Full result: %3.5f +- %3.5f\n", result, error);
+  printf("Full result: %3.5f +- %3.5f with %d points\n", result, error, N);
 }
 
