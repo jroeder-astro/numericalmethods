@@ -19,7 +19,7 @@ with open('test_data.txt', 'r') as csvfile:
 #plt.plot(t, r, label='r(t)')
 #plt.plot(t[1], r[1], 'ro')
 #plt.plot(chi, r, label = 'r(chi)')
-#plt.plot(chi, phi, label='phi(chi)')
+#plt.plot(chi, t, label='phi(chi)')
 #plt.plot(chi, r*np.cos(phi), label='rcos(phi), chi')
 #plt.plot(chi, r*np.sin(phi), label='rsin(phi), chi')
 plt.plot(r*np.cos(phi), r*np.sin(phi), label='rsin(phi), rcos(phi)')

@@ -20,9 +20,9 @@ main(){
 
   // remember to put in e and r1 
 
-  double e = 0.3; double r1 = 7.0;
+//  double e = 0.3; double r1 = 7.0;
 //  double e = 0.2; double r1 = 6.1;
-//  double e = 0.22722; double r1 = 5.26;
+  double e = 0.22722; double r1 = 5.26;
  
 
   double y_in[N] = {0.0, 0.0};
@@ -85,7 +85,7 @@ void rk_step(int N, vector<double> *y_chi, double chi,
 void f_times_tau(vector<double> *y_chi, double chi, double *ftau, 
                  double tau, double e, double r1){
                         //   vvv hard coded black hole mass
-  ftau[0] = tau * (lat(e, r1)*5/
+  ftau[0] = tau * (pow(lat(e, r1), 2.)*5/
             ((lat(e, r1)-2-2*e*cos(chi))*pow(1+e*cos(chi), 2.)) * 
             sqrt((lat(e, r1)-2-2*e)*(lat(e,r1)-2+2*e)/
             (lat(e,r1)-6-2*e*cos(chi))));
