@@ -15,8 +15,8 @@ double lat(double e, double r1);
 main(){
 
   int N = 2; int i1 = 0; int i2 = 0;
-  int max_steps = 1000;
-  double tau = 2.*M_PI/100.;
+  int max_steps = 20000;
+  double tau = 2.*M_PI/1000.;
 
   // remember to put in e and r1 
 
@@ -50,9 +50,9 @@ main(){
   }
 
 //  printf("\nDelta(phi)_theo = %3.5lf\n", 6.*M_PI/lat(e, r1));   
-  printf("\nDelta(phi)_theo = %3.5lf\n", 2.*M_PI*(1.+3./lat(e, r1)));   
+//  printf("\nDelta(phi)_theo = %3.5lf\n", 2.*M_PI*(1.+3./lat(e, r1)));   
 //  for (i1 = 101; i1 <= max_steps; i1+=100)
-  printf("Delta(phi)_calc = %3.5lf\n", y[105][1]-y[5][1]);
+//  printf("Delta(phi)_calc = %3.5lf\n", y[105][1]-y[5][1]);
 
   return 0;
 }

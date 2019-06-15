@@ -8,7 +8,7 @@ r = []
 chi = []
 
 #with open('e_023_r1_526.txt', 'r') as csvfile:
-with open('test_data.txt', 'r') as csvfile:
+with open('data4.txt', 'r') as csvfile:
     plots = csv.reader(csvfile, delimiter = ',')
     for row in plots:
         t.append(float(row[0]))
