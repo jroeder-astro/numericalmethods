@@ -4,6 +4,15 @@
 #include <vector>
 using namespace std;
 
+/*
+  --- Questions ---
+
+  - Leapfrog: how to implement efficiently?
+  - Boundary: Only for u or also for r and s?
+
+*/
+
+
 double u0(double x);
 
 double u0_x(double x);
@@ -17,12 +26,12 @@ void lxfr_tstep_atj(int N, vector<vector<double>> &y_n,
                     double alpha, int tmax_i);
 
 void frog_tstep_atj(int N, vector<vector<double>> &y_n, 
-	    vector<double> &y_next, int j, double tau, 
-	    double alpha, int tmax_i);
+	            vector<double> &y_next, int j, double tau, 
+	            double alpha, int tmax_i);
 
 void lxwd_tstep_atj(int N, vector<vector<double>> &y_n, 
-	    vector<double> &y_next, int j, double tau, 
-	    double alpha, int tmax_i);
+	            vector<double> &y_next, int j, double tau, 
+                    double alpha, int tmax_i);
 
 
 int main() {
@@ -148,11 +157,26 @@ void lxwd_tstep_atj(int N, vector<vector<double>> &y_n,
 	    vector<double> &y_next, int j, double tau, 
 	    double alpha, int tmax_i) {
   // calculates one time step with Lax-Wendroff at position j
-  // periodic boundary conditions (hopefully)
   int a = j-1; int b = j+1;
+
+  // periodic boundary conditions (hopefully) 
+/*
   if (j-1 < 1) a = tmax_i;
   if (j+1 > tmax_i+1) b = 1; 
+*/
 
+
+/*
+  // outgoing wave boundary conditions (again, hopefully)
+  double Q = (1.-alpha)/(1.+alpha);
+  if (j+1 > tmax_i+1) {
+    y_next[0] = y_n[j][0] + Q * (y_n[][0]);
+    y_next[1] = y_n[j][1] + alpha* (1./2.*(y_n[b][0] - y_n[a][0]) + 
+                alpha/2. * (y_n[b][1] + y_n[a][1] - 2.* y_n[j][1]));
+    y_next[2] = y_n[j][2] + 1./2. * tau * (y_n[j][1] + y_next[1]);
+  }
+*/
+  
   y_next[0] = y_n[j][0] + alpha* (1./2.*(y_n[b][1] - y_n[a][1]) + 
               alpha/2. * (y_n[b][0] + y_n[a][0] - 2.* y_n[j][0]));
   y_next[1] = y_n[j][1] + alpha* (1./2.*(y_n[b][0] - y_n[a][0]) + 
