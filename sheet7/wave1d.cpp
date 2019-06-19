@@ -37,7 +37,7 @@ void lxwd_tstep_atj(int N, vector<vector<double>> &y_n,
 int main() {
 
   int i1 = 0; int i2 = 0; int i3 = 0; int N = 3; 
-  int tsteps = 1000; int xsteps = 1000;
+  int tsteps = 3000; int xsteps = 1000;
 
   double v = 1.;                     // factor in wave equation
 
@@ -66,31 +66,39 @@ int main() {
 
   double alpha = v * (tup-tlow)/tsteps * xsteps/(xup-xlow);
   vector<double> y_t(N);
-  double t_unit = (tup-tlow)/tsteps;
+  double t_unit = (tup-tlow)/tsteps; 
+  double Q = (1.-alpha)/(1.+alpha);
 
   // calculate one time step for every then move to the next time step,
   // again for all x and so on
   for (i1 = 0; i1 <= tsteps; i1++) {
-    for (i2 = 0; i2 <= xsteps+1; i2++) {
+    for (i2 = 1; i2 <= xsteps; i2++) {
 
       // Comment in the one that you want to use 
       // FTCS, Lax-Friedrichs, Lax-Wendroff
 
-      // ftcs_tstep_atj(N, y[i1], y_t, i2, t_unit, alpha, tsteps);
-      lxfr_tstep_atj(N, y[i1], y_t, i2, t_unit, alpha, tsteps);
-      // lxwd_tstep_atj(N, y[i1], y_t, i2, t_unit, alpha, tsteps);
+      // ftcs_tstep_atj(N, y[i1], y_t, i2, t_unit, alpha, xsteps);
+      // lxfr_tstep_atj(N, y[i1], y_t, i2, t_unit, alpha, xsteps);
+      lxwd_tstep_atj(N, y[i1], y_t, i2, t_unit, alpha, xsteps);
 
       for (i3 = 0; i3 < N; i3++) {
         y[i1+1][i2][i3] = y_t[i3];
         // test print
         // printf("y[%d][%d][%d] = %f\n", i1+1, i2, i3, y_t[i3]);
       }
+
+      // Outgoing wave boundary conditions
+      for (i3 = 0; i3 < N; i3++) {
+        y[i1+1][0][i3] = y[i1][1][i3] + Q * (y[i1][0][i3]-y[i1+1][1][i3]);
+        y[i1+1][xsteps+1][i3] = y[i1][xsteps][i3] + 
+                               Q * (y[i1][xsteps+1][i3]-y[i1+1][xsteps][i3]);
+      }
     }
   }
 
   // output
   for (i3 = 1; i3 <= xsteps; i3++) {
-    printf("%f,%f,%f,%d\n", x[i3], y[0][i3][2], y[500][i3][2], i3);
+    printf("%f,%f,%f,%d\n", x[i3], y[0][i3][2], y[2000][i3][2], i3);
   }
 
   return 0;
@@ -155,44 +163,22 @@ void frog_tstep_atj(int N, vector<vector<double>> &y_n,
 
 void lxwd_tstep_atj(int N, vector<vector<double>> &y_n, 
 	    vector<double> &y_next, int j, double tau, 
-	    double alpha, int tmax_i) {
+	    double alpha, int xmax_i) {
   // calculates one time step with Lax-Wendroff at position j
   int a = j-1; int b = j+1;
-
-  // periodic boundary conditions (hopefully) 
-
-  if (j-1 < 1) a = tmax_i;
-  if (j+1 > tmax_i+1) b = 1; 
-
-
-
-  // outgoing wave boundary conditions (again, hopefully)
-  double Q = (1.-alpha)/(1.+alpha);
 /*
-  if (j+1 > tmax_i+1) {
-    printf("in if statement for boundary\n");
-    y_next[0] = y_n[a][0] + Q * (y_n[j][0]-(y_n[j-1][0] 
-                + alpha* (1./2.*(y_n[j][1] - y_n[a-1][1]) 
-                + alpha/2. * (y_n[j][0] + y_n[a-1][0] - 2.* y_n[a][0]))));
-    y_next[1] = y_n[a][1] + Q * (y_n[j][1]-(y_n[j-1][1] 
-                + alpha* (1./2.*(y_n[j][0] - y_n[a-1][1]) 
-                + alpha/2. * (y_n[j][1] + y_n[a-1][1] - 2.* y_n[a][1]))));
-    y_next[2] = y_n[a][2] + Q * (y_n[j][2] + 1./2. * tau 
-                * (y_n[a][1] + y_n[a][1] + alpha* (1./2.*(y_n[j][0] 
-                - y_n[a-1][0]) + alpha/2. * (y_n[j][1] + y_n[a-1][1] 
-                - 2.* y_n[a][1]))));
-  }
-*/  
-//  else { 
-    // printf("in normal LXWD\n");
-    y_next[0] = y_n[j][0] + alpha* (1./2.*(y_n[b][1] - y_n[a][1]) + 
-                alpha/2. * (y_n[b][0] + y_n[a][0] - 2.* y_n[j][0]));
-  //  printf("y_next[0] ok\n");
-    y_next[1] = y_n[j][1] + alpha* (1./2.*(y_n[b][0] - y_n[a][0]) + 
-                alpha/2. * (y_n[b][1] + y_n[a][1] - 2.* y_n[j][1]));
-    y_next[2] = y_n[j][2] + 1./2. * tau * (y_n[j][1] + y_next[1]);
-               // Equation (5.15), hopefully s[j][n+1] ^^^^^^^^^
-//  }
+  // periodic boundary conditions (hopefully) 
+     // vvvvv these work magically
+  if (j-1 < 1) a = xmax_i;
+  if (j+1 > xmax_i+1) b = 1; 
+*/
+  // printf("in normal LXWD\n");
+  y_next[0] = y_n[j][0] + alpha* (1./2.*(y_n[b][1] - y_n[a][1]) + 
+              alpha/2. * (y_n[b][0] + y_n[a][0] - 2.* y_n[j][0]));
+  // printf("y_next[0] ok\n");
+  y_next[1] = y_n[j][1] + alpha* (1./2.*(y_n[b][0] - y_n[a][0]) + 
+              alpha/2. * (y_n[b][1] + y_n[a][1] - 2.* y_n[j][1]));
+  y_next[2] = y_n[j][2] + 1./2. * tau * (y_n[j][1] + y_next[1]);
+             // Equation (5.15), hopefully s[j][n+1] ^^^^^^^^^
 }
-
 
