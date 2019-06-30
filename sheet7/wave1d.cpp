@@ -85,20 +85,20 @@ int main() {
         y[i1+1][i2][i3] = y_t[i3];
         // test print
         // printf("y[%d][%d][%d] = %f\n", i1+1, i2, i3, y_t[i3]);
-      }
+      }  
+    }
 
-      // Outgoing wave boundary conditions
-      for (i3 = 0; i3 < N; i3++) {
-        y[i1+1][0][i3] = y[i1][1][i3] + Q * (y[i1][0][i3]-y[i1+1][1][i3]);
-        y[i1+1][xsteps+1][i3] = y[i1][xsteps][i3] + 
-                               Q * (y[i1][xsteps+1][i3]-y[i1+1][xsteps][i3]);
-      }
+    // Outgoing wave boundary conditions
+    for (i3 = 0; i3 < N; i3++) {
+      y[i1+1][0][i3] = y[i1][1][i3] + Q * (y[i1][0][i3]-y[i1+1][1][i3]);
+      y[i1+1][xsteps+1][i3] = y[i1][xsteps][i3] + 
+                             Q * (y[i1][xsteps+1][i3]-y[i1+1][xsteps][i3]);
     }
   }
 
   // output
   for (i3 = 1; i3 <= xsteps; i3++) {
-    printf("%f,%f,%f,%d\n", x[i3], y[0][i3][2], y[2000][i3][2], i3);
+    printf("%f,%f,%f,%d\n", x[i3], y[0][i3][2], y[1700][i3][2], i3);
   }
 
   return 0;
