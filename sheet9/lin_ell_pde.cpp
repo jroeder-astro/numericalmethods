@@ -10,9 +10,11 @@ double nonlin(double x, double y);
 void gauss_seidel(vector<vector<double>> &y_n, double *y_next,
                   vector<vector<double>> &y_npo, int i, int j, double Del);
 
+
 main() {
+
     int i1 = 0; int i2 = 0; int i3 = 0;
-    int Nt = 100; int Ns = 32; // timesteps and spacesteps
+    int Nt = 10000; int Ns = 32; // timesteps and spacesteps
     double D = M_PI/(double)Ns; 
     vector<vector<vector<double>>> 
         y(Nt, vector<vector<double>>(Ns+2, vector<double>(Ns+2)));
@@ -34,7 +36,7 @@ main() {
         }
     }
     
-    for (i1 = 1; i1 < 30; i1++) {
+    for (i1 = 1; i1 < Nt-1; i1++) {
         for (i2 = 1; i2 < Ns+1; i2++) {
             for (i3 = 1; i3 < Ns+1; i3++) {
                 gauss_seidel(y[i1], &y_tmp, y[i1+1], i2, i3, D); 
@@ -42,12 +44,13 @@ main() {
                 y[i1+1][i2][i3] = y_tmp;
             }
         }
+        //printf("i1 = %d\n", i1);
     }
 
     for (i1 = 1; i1 < Ns+1; i1++) {
         for (i2 = 1; i2 < Ns+1; i2++) {
             printf("%3.8lf,%3.8lf,%3.8lf\n", 
-                  (double)i1*D, (double)i2*D, y[20][i1][i2]);
+                  (double)i1*D, (double)i2*D, y[9000][i1][i2]);
         }
     }
 

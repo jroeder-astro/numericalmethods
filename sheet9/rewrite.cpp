@@ -14,7 +14,7 @@ void gauss_seidel(vector<vector<double>> &y_n, double *y_next,
 main() {
 
     int i1 = 0; int i2 = 0; int i3 = 0;
-    int Nt = 10; int Ns = 32; // timesteps and spacesteps
+    int Nt = 10000; int Ns = 32; // timesteps and spacesteps
     double D = M_PI/(double)Ns; 
     vector<vector<vector<double>>> 
         y(4, vector<vector<double>>(Ns+2, vector<double>(Ns+2)));
@@ -36,8 +36,6 @@ main() {
         }
     }
 
-    // printf("DONE initialization\n");
-
     // do the gauss seidel algorithm initially
     for (i1 = 0; i1 < 3; i1++) {
         for (i2 = 1; i2 < Ns+1; i2++) {
@@ -49,8 +47,6 @@ main() {
         }
     }
 
-    // printf("DONE first gauss seidel run\n");
-
     // do the gauss seidel between slices 2 and 3 to save memory
     int n = -1; int a = 3;
     for (i1 = 0; i1 < Nt; i1++) {
@@ -58,23 +54,20 @@ main() {
             for (i3 = 1; i3 < Ns+1; i3++) {
                 gauss_seidel(y[a], &y_tmp, y[a+n], i2, i3, D); 
                 y[a+n][i2][i3] = y_tmp;
-                //printf("\n");
                 //printf("%f, %d, %d\n", y[a+n][i2][i3], a+n, a);
             }
         }
         n *= -1; 
         if (a == 3) a = 2; 
         else if (a == 2) a = 3;
-        printf("n *= -1, %d\n", i1);
+        //printf("n *= -1, %d\n", i1);
     }
-
-    printf("DONE gauss seidel back/forth\n");
 
     // output
     for (i1 = 1; i1 < Ns+1; i1++) {
         for (i2 = 1; i2 < Ns+1; i2++) {
             printf("%3.8lf,%3.8lf,%3.8lf\n", 
-                  (double)i1*D, (double)i2*D, y[2][i1][i2]);
+                  (double)i1*D, (double)i2*D, y[3][i1][i2]);
         }
     }
 
