@@ -95,7 +95,14 @@ int main() {
         printf("adresses:\nh_i\t\t h_n\t\t h_c\t\t\n");
         printf("%p\t %p\t %p\n", &h_i, &h_n, &h_c);
 
-
+    
+    
+    // inverse fourier transform
+    sign = -1; // hopefully correct cleaned FT
+    four1(h_c-1, 2*N, sign);
+    // is this the correct implementation of 
+    // Parseval's theorem?
+    for (i1 = 0; i1 < 2*N; i1++) h_c[i1]/=(2*N);
 
     printf("\n** exit program **\n\n");
 
